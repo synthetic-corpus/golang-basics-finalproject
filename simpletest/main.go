@@ -4,18 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"github.com/gorilla/mux"
 	"os"
-	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
-func helloAPI(w http.ResponseWriter, r *http.Request){
+func helloAPI(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	reply := map[string]string{
-		"Words": "Are over here",
+		"Words":     "Are over here",
 		"These are": "more words",
-		"Hello": "World"
+		"Hello":     "World",
 	}
 
 	json.NewEncoder(w).Encode(reply)
@@ -23,8 +23,10 @@ func helloAPI(w http.ResponseWriter, r *http.Request){
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/hello",helloAPI).Methods("GET")
+	router.HandleFunc("/hello", helloAPI).Methods("GET")
 
-	port := ":" + strconv.Iota(os.Getenv("API_PORT"))
+	port := ":" + os.Getenv("API_PORT")
 	fmt.Println("We are listening on " + port)
+
+	http.ListenAndServe(port, router)
 }

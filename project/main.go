@@ -37,9 +37,11 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 func retrieveUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	user_id := mux.Vars(r)["id"]
 
 	reply := map[string]string{
 		"Message": "Retrieve User Called as expected",
+		"user_id": user_id,
 	}
 
 	json.NewEncoder(w).Encode(reply)
@@ -61,9 +63,11 @@ func retrieveUsers(w http.ResponseWriter, r *http.Request) {
 func updateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	user_id := mux.Vars(r)["id"]
 
 	reply := map[string]string{
 		"Message": "Update User Called as expected",
+		"user_id": user_id,
 	}
 
 	json.NewEncoder(w).Encode(reply)
@@ -73,9 +77,11 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	user_id := mux.Vars(r)["id"]
 
 	reply := map[string]string{
 		"Message": "Delete user Called as expected",
+		"user_id": user_id,
 	}
 
 	json.NewEncoder(w).Encode(reply)

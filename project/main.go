@@ -32,8 +32,12 @@ func (db *Database) writeCustomer(newCustomer Customer) bool {
 	return true // will put this into a try catch block later
 }
 
-func (db *Database) retrieveAll() map[string]Customer {
-	return db.Customers
+func (db *Database) retrieveAll() []Customer {
+	returnThis := []Customer{}
+	for key := range db.Customers{
+		returnThis = append(returnThis, db.Customers[key])
+	}
+	return returnThis
 }
 
 func (db *Database) retrieveOne(ID string) Customer {
@@ -48,6 +52,11 @@ func(db *Database) updateOne(ID string, customer Customer){
 
 func(db *Database) deleteOne(ID string){
 	delete(db.Customers, ID)
+}
+
+// Instatiates an empty Database
+var myFakeDatabase Database = Database{
+	Customers: map[string]Customer{},
 }
 
 
@@ -82,10 +91,7 @@ func retrieveUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	user_id := mux.Vars(r)["id"]
 
-	reply := map[string]string{
-		"Message": "Retrieve User Called as expected",
-		"user_id": user_id,
-	}
+	reply := myFakeDatabase.retrieveOne(user_id)
 
 	json.NewEncoder(w).Encode(reply)
 }
@@ -95,9 +101,7 @@ func retrieveUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	reply := map[string]string{
-		"Message": "Retrieve ALL Users Called as expected",
-	}
+	reply := myFakeDatabase.retrieveAll()
 
 	json.NewEncoder(w).Encode(reply)
 }
@@ -131,10 +135,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Instatiates an empty Database
-	var myFakeDatabase Database = Database{
-		Customers: map[string]Customer{},
-	}
+	
 
 // Populates the Database
 	var myFakeUsers []Customer = []Customer{

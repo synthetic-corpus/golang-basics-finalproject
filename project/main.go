@@ -88,12 +88,20 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 // retrieve user
 func retrieveUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	
 	user_id := mux.Vars(r)["id"]
-
-	reply := myFakeDatabase.retrieveOne(user_id)
-
-	json.NewEncoder(w).Encode(reply)
+	if _, ok := myFakeDatabase.Customers[user_id]; ok{
+		w.WriteHeader(http.StatusOK)
+		reply := myFakeDatabase.retrieveOne(user_id)
+		json.NewEncoder(w).Encode(reply)
+	}else{
+		w.WriteHeader(http.StatusNotFound)
+		reply := map[string]string{
+			"Message": "User ID was not found!",
+			"ID": user_id,
+		}
+		json.NewEncoder(w).Encode(reply)
+	}
 }
 
 // retieve users
@@ -109,29 +117,45 @@ func retrieveUsers(w http.ResponseWriter, r *http.Request) {
 // update user
 func updateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 	user_id := mux.Vars(r)["id"]
 
-	reply := map[string]string{
-		"Message": "Update User Called as expected",
-		"user_id": user_id,
+	if _, ok := myFakeDatabase.Customers[user_id]; ok{
+		w.WriteHeader(http.StatusOK)
+		reply := map[string]string{
+			"Message":"Update path found a user!",
+			"ID": user_id,
+		}
+		json.NewEncoder(w).Encode(reply)
+	}else{
+		w.WriteHeader(http.StatusNotFound)
+		reply := map[string]string{
+			"Message": "User ID was not found!",
+			"ID": user_id,
+		}
+		json.NewEncoder(w).Encode(reply)
 	}
-
-	json.NewEncoder(w).Encode(reply)
 }
 
 // delete user
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	
 	user_id := mux.Vars(r)["id"]
-
-	reply := map[string]string{
-		"Message": "Delete user Called as expected",
-		"user_id": user_id,
+	if _, ok := myFakeDatabase.Customers[user_id]; ok{
+		w.WriteHeader(http.StatusOK)
+		reply := map[string]string{
+			"Message":"Delete path found a user!",
+			"ID": user_id,
+		}
+		json.NewEncoder(w).Encode(reply)
+	}else{
+		w.WriteHeader(http.StatusNotFound)
+		reply := map[string]string{
+			"Message": "User ID was not found!",
+			"ID": user_id,
+		}
+		json.NewEncoder(w).Encode(reply)
 	}
-
-	json.NewEncoder(w).Encode(reply)
 }
 
 func main() {

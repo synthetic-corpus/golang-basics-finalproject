@@ -52,10 +52,11 @@ func (db *Database) retrieveOne(ID string) Customer {
 	return db.Customers[ID] // will add better error handling later
 }
 
-func(db *Database) updateOne(ID string, customer Customer){
-	// Logic used here should prevent users from using this to alter the UUID.
-	customer.ID = ID
-	db.Customers[ID] = customer
+func(db *Database) updateOne(ID string, update Customer){
+	// Api function already has santized the input of ID, so we will find a user to update
+	// Doesn't update by field, so fields can be set to null. Better updates could be had in future versions.
+	update.ID = ID // If a bad reqeust tried to over write the UUID, than this will correct it.
+	db.Customers[ID] = update
 }
 
 func(db *Database) deleteOne(ID string){
@@ -129,12 +130,14 @@ func updateCustomer(w http.ResponseWriter, r *http.Request) {
 	user_id := mux.Vars(r)["id"]
 
 	if _, ok := myFakeDatabase.Customers[user_id]; ok{
+		
+		decoder := json.NewDecoder(r.Body)
+		var updateCustomer Customer
+		err := decoder.Decode(&updateCustomer)
+		if err != nil { panic(err)}
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		reply := map[string]string{
-			"Message":"Update path found a user!",
-			"ID": user_id,
-		}
-		json.NewEncoder(w).Encode(reply)
+		myFakeDatabase.updateOne(user_id,updateCustomer)
 	}else{
 		w.WriteHeader(http.StatusNotFound)
 		reply := map[string]string{

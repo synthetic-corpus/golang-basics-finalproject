@@ -170,6 +170,11 @@ func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Home Page Function
+func showHomePage(w http.ResponseWriter, r *http.Request){
+	http.ServeFile(w,r, "./homepage.html")
+}
+
 func main() {
 	
 
@@ -206,7 +211,10 @@ func main() {
 	}
 	fmt.Println(myFakeDatabase.Customers)
 
+	
+
 	router := mux.NewRouter()
+	router.HandleFunc("/", showHomePage).Methods("GET")
 	router.HandleFunc("/hello", helloAPI).Methods("GET")
 	router.HandleFunc("/customers", addCustomer).Methods("POST")
 	router.HandleFunc("/customers/{id}", getCustomer).Methods("GET")

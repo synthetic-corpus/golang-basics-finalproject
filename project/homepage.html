@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 1500px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-md-12">
+        <h1>A simple API</h1>
+        <p>This is a simple API that has only five paths. The pats are CRUD fuctionality for a CRM systems.</p>
+        <p>All paths work with the same customer object</p>
+    </div>
+    <div class="col-md-6">
+        <h2>The Paths</h2>
+        <ul>
+            <li>POST /customers</li>
+            <li>GET /customers</li>
+            <li>GET /customers/:id</li>
+            <li>UPDATE /customers/:id</li>
+            <li>DELETE /customers/:id</li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h2>JSON structure of a customer object</h2>
+        <table class="table table-striped">
+            <thead>
+                <th>Key</th>
+                <th>Data Type</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>string (auto generated)</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>Phone Number</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>Contacted</td>
+                    <td>boolean</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row content">
+    
+  </div>
+</div>
+
+
+
+</body>
+</html>

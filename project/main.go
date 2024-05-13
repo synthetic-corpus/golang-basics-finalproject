@@ -20,6 +20,14 @@ type Customer struct {
 	Contacted bool
 }
 
+type CustomerUpdate struct {
+	Name string
+	Role string
+	Email string
+	Phone string
+	Contact bool
+}
+
 // The fake Database
 type Database struct {
 	Customers map[string]Customer
@@ -74,19 +82,20 @@ func helloAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 // create user
-func createUser(w http.ResponseWriter, r *http.Request) {
+func addCustomer(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var newCustomer Customer
+	err := decoder.Decode(&newCustomer)
+	if err != nil { panic(err)}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-
-	reply := map[string]string{
-		"Message": "Create User Called as expected",
-	}
-
-	json.NewEncoder(w).Encode(reply)
+	newCustomer.ID = uuid.NewString()
+	myFakeDatabase.writeCustomer(newCustomer)
+	json.NewEncoder(w).Encode(newCustomer)
 }
 
 // retrieve user
-func retrieveUser(w http.ResponseWriter, r *http.Request) {
+func getCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	
 	user_id := mux.Vars(r)["id"]
@@ -105,7 +114,7 @@ func retrieveUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // retieve users
-func retrieveUsers(w http.ResponseWriter, r *http.Request) {
+func getCustomers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
@@ -115,7 +124,7 @@ func retrieveUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 // update user
-func updateUser(w http.ResponseWriter, r *http.Request) {
+func updateCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	user_id := mux.Vars(r)["id"]
 
@@ -137,7 +146,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // delete user
-func deleteUser(w http.ResponseWriter, r *http.Request) {
+func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	
 	user_id := mux.Vars(r)["id"]
@@ -196,11 +205,11 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/hello", helloAPI).Methods("GET")
-	router.HandleFunc("/users", createUser).Methods("POST")
-	router.HandleFunc("/users/{id}", retrieveUser).Methods("GET")
-	router.HandleFunc("/users", retrieveUsers).Methods("GET")
-	router.HandleFunc("/users/{id}", updateUser).Methods("PATCH")
-	router.HandleFunc("/users/{id}", deleteUser).Methods("DELETE")
+	router.HandleFunc("/customers", addCustomer).Methods("POST")
+	router.HandleFunc("/customers/{id}", getCustomer).Methods("GET")
+	router.HandleFunc("/customers", getCustomers).Methods("GET")
+	router.HandleFunc("/customers/{id}", updateCustomer).Methods("PATCH")
+	router.HandleFunc("/customers/{id}", deleteCustomer).Methods("DELETE")
 
 	port := ":" + os.Getenv("API_PORT")
 	fmt.Println("We are listening on " + port)

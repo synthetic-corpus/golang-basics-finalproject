@@ -155,6 +155,7 @@ func deleteCustomer(w http.ResponseWriter, r *http.Request) {
 	user_id := mux.Vars(r)["id"]
 	if _, ok := myFakeDatabase.Customers[user_id]; ok{
 		w.WriteHeader(http.StatusOK)
+		myFakeDatabase.deleteOne(user_id)
 		reply := map[string]string{
 			"Message":"Delete path found a user!",
 			"ID": user_id,

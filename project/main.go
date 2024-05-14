@@ -16,7 +16,7 @@ type Customer struct {
 	Name string
 	Role string
 	Email string
-	Phone string
+	Phone uint64
 	Contacted bool
 }
 
@@ -24,7 +24,7 @@ type CustomerUpdate struct {
 	Name string
 	Role string
 	Email string
-	Phone string
+	Phone uint64
 	Contact bool
 }
 
@@ -185,7 +185,7 @@ func main() {
 			Name: "John Doe",
 			Role: "Buyer",
 			Email: "yourEmail@google.net",
-			Phone: "818-555-1515",
+			Phone: 8185551515,
 			Contacted: false,
 		},
 		{
@@ -193,7 +193,7 @@ func main() {
 			Name: "Allison Looper",
 			Role: "Test Merchant",
 			Email: "allyloop1990@gmail.com",
-			Phone: "626-555-8055",
+			Phone: 6265558055,
 			Contacted: false,
 		},
 		{
@@ -201,7 +201,7 @@ func main() {
 			Name: "Holly Friedman",
 			Role: "Another person",
 			Email: "Hollyofthevalley@protonmail.com",
-			Phone: "818-555-7112",
+			Phone: 818555112,
 			Contacted: false,
 		},
 	}
